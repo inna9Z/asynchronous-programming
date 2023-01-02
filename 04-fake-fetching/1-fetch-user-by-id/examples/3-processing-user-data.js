@@ -3,40 +3,47 @@ import { fetchUserById } from '../../../lib/fetch-user-by-id/index.js';
 
 const { log, error } = labeledLogger();
 
-/* processing user data
-
-  after fetching data from an API you will need to process it
-  this is usually done in a .then() handler after the response handler
-
-*/
+/* Contact Info */
 
 // --- declare some callbacks ---
 
-const createIntroduction = (user) => {
-  return `${user.id}: Hello, my name is ${user.name}.`;
+const getContactInfo = (user) => {
+  // write me!
+    log(`${user.id} :user ContactInfo ${user.email} , ${user.address.zipcode} , ${user.website}`);
+
 };
+
+const handleError = (err) => error(err);
 
 // --- use the callbacks ---
 
-log('fetching user 1');
-fetchUserById(1)
-  .then((user) => createIntroduction(user))
-  // "1: Hello, my name is Leanne Graham"
-  .then((intro) => log(intro))
+log('fetching and processing user 2');
+fetchUserById(2)
+  .then((user) => getContactInfo(user))
+  // "2: Shana@melissa.tv, 010-692-6593 x09125, anastasia.net"
+  .then((contactInfo) => log(contactInfo))
   .catch((err) => error(err));
 
-log('fetching user 5');
+log('fetching and processing user 5');
 fetchUserById(5)
-  .then((user) => createIntroduction(user))
-  // 51: Hello, my name is Chelsey Dietrich"
-  .then((intro) => log(intro))
+  .then(getContactInfo)
+  // "5: Lucio_Hettinger@annie.ca, (254)954-1289, demarco.info"
+  .then((contactInfo) => log(contactInfo))
   .catch((err) => error(err));
 
-log('fetching user 12 (there are only 10 users!)');
-fetchUserById(12)
-  .then(createIntroduction)
-  .then((intro) => log(intro))
-  // 404
+log('fetching and processing user 7');
+fetchUserById(7)
+  .then(getContactInfo)
+  // "7: Telly.Hoeger@billy.biz, 210.067.6132, elvis.io"
+  .then((contactInfo) => log(contactInfo))
   .catch((err) => error(err));
+
+log('fetching and processing user 12 (there are only 10 users!)');
+// 404
+fetchUserById(12)
+  .then(getContactInfo)
+  // "7: Telly.Hoeger@billy.biz, 210.067.6132, elvis.io"
+  .then((contactInfo) => log(contactInfo))
+  .catch((err) => handleError(err));
 
 log('= = = =  the call stack is empty  = = = =');
